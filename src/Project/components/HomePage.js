@@ -6,6 +6,8 @@ import { useState } from "react";
 import { addSum } from "../redux/actions/ProductsAction";
 import Example from "../DetailsModal";
 import logo from "../img/7.png"; 
+import { Carousel } from "react-bootstrap";
+import ProductReducer from "../redux/reducers/productsReducer";
 
 export default function HomePage() {
 
@@ -18,30 +20,45 @@ export default function HomePage() {
     const [staticModal, setStaticModal] = useState(false);
     const toggleOpen = () => setStaticModal(!staticModal);
 
-    return (
-        <>
-            <div className="container-fluid" style={{ backgroundColor: "white"}}>
-                <img src={logo} alt="Logo" style={{ width: "100%" }}/> 
-                <div className="row justify-content-center align-items-center text-light p-3 ">
-                    <h1 className="text-center" style={{ color: "black" }}>Discover our products</h1>
-                </div>
 
-                <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center mt-3">
-                    {products ? products.map((item, index) => (
-                        <div className="col">
-                            <div className="card h-100 shadow">
-                                <img className="card-img-top" src={item.img} alt="" />
-                                <div className="card-body">
-                                    <h5 className="card-title">{item.title}</h5>
-                                    <p className="card-text" style={{ color: "black" }}>Price: {item.price} NIS | Amount: {item.amount}</p>
-                                    <button className="btn btn-light text-dark btn-lg btn-block" onClick={() => { dispatch(addToCart(item)); dispatch(addSum(item.code)); }}>ADD TO CART</button> {/* Change button color and size */}
-                                    <Example name={item.description} description="A package of 8 books and ten notebooks" code={item.code}></Example>
-                                </div>
-                            </div>
-                        </div>
-                    )) : <div className="text-center">Products are currently unavailable</div>}
-                </div>
+
+    const chunkedProducts = [];
+    for (let i = 0; i < products.length; i += 1) {
+        chunkedProducts.push(products.slice(i, i + 4));
+    }
+
+
+
+        
+        
+
+    return (
+        <div className="container-fluid" style={{ backgroundColor: "white"}}>
+            <div className="row justify-content-center align-items-center text-light p-3 ">
+                <h1 className="text-center" style={{ color: "black" }}>Discover our Hot products</h1>
             </div>
-        </>
+
+            <Carousel>
+                {chunkedProducts.map((productGroup, index) => (
+                    <Carousel.Item key={index}>
+                        <div className="row">
+                            {productGroup.map((product) => (
+                                <div className="col-md-3" key={product.code}>
+                                    <img
+                                        className="d-block w-100"
+                                        src={product.img}
+                                        // alt={product.description}
+                                    />
+                                    <Carousel.Caption>
+                                        {/* <h3>{product.description}</h3>
+                                        <p>Price: ${product.price}</p> */}
+                                    </Carousel.Caption>
+                                </div>
+                            ))}
+                        </div>
+                    </Carousel.Item>
+                ))}
+            </Carousel>
+        </div>
     );
-   }
+}
