@@ -24,7 +24,7 @@ export default function HomePage() {
 
     const chunkedProducts = [];
     for (let i = 0; i < products.length; i += 1) {
-        chunkedProducts.push(products.slice(i, i + 4));
+        chunkedProducts.push(products.slice(i, i+4));
     }
 
 
@@ -34,6 +34,7 @@ export default function HomePage() {
 
     return (
         <div className="container-fluid" style={{ backgroundColor: "white"}}>
+            <img src={logo} alt="Logo" style={{ width: "100%" }}/> 
             <div className="row justify-content-center align-items-center text-light p-3 ">
                 <h1 className="text-center" style={{ color: "black" }}>Discover our Hot products</h1>
             </div>
